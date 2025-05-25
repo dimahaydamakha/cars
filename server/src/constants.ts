@@ -1,0 +1,1 @@
+export const API_SERVER_DOMAIN =' https://carapi.app/api';

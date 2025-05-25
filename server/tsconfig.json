@@ -4,6 +4,9 @@
     "module": "commonjs",
     "outDir": "./dist",
     "rootDir": "./src",
+    "lib": [
+      "es5", "es6", "dom", "dom.iterable"
+  ],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
