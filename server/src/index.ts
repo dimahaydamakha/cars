@@ -7,11 +7,12 @@ import { urlQueryBuilder } from "./util";
 
 app.get("/get_makes", async (req, res) => {
 
-  const response = await fetch(`${API_SERVER_DOMAIN}/makes`);
+  const response = await fetch(`${API_SERVER_DOMAIN}/makes/v2`);
   const data = await response.json() as any;
   if (!response.ok) {
     throw new Error(`Error fetching model info from car api, status: ${response.status}`)
   }
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.json(data?.data.map((item: any)=> item.name));
 })
 
@@ -19,13 +20,14 @@ app.get("/get_models", async (req, res) => {
   if (!req.query.year && !req.query.make) {
     res.status(400).send("'year' and 'make' are required query parameters!");
   }
-  const url = urlQueryBuilder(req.query, `${API_SERVER_DOMAIN}/models`);
+  const url = urlQueryBuilder(req.query, `${API_SERVER_DOMAIN}/models/v2`);
 
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Error fetching model info from car api, status: ${response.status}`)
   }
   const data = await response.json() as any;
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.send(data?.data.map((item: any) => item.name));
 })
 
@@ -34,13 +36,14 @@ app.get("/get_trims", async (req, res) => {
     res.status(400).send("'year' and 'make' and 'model' are required query parameters!");
   }
 
-  const url = urlQueryBuilder(req.query, `${API_SERVER_DOMAIN}/trims`);
+  const url = urlQueryBuilder(req.query, `${API_SERVER_DOMAIN}/trims/v2`);
 
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Error fetching trim info from car api, status: ${response.status}`)
   }
   const data = await response.json() as any;
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.send(data?.data.map((item: any) => ({id: item.id, name : item.name, description: item.description, msrp: item.msrp, invoice: item.invoice})));
 })
 
@@ -48,11 +51,12 @@ app.get("/get_all_trim_info/:id", async (req, res) => {
   if (!req.params.id) {
     res.status(400).send("'id' is a required path parameter!");
   }
-  const response = await fetch(`${API_SERVER_DOMAIN}/trims/${req.params.id}`);
+  const response = await fetch(`${API_SERVER_DOMAIN}/trims/v2/${req.params.id}`);
   if (!response.ok) {
     throw new Error(`Error fetching all information about a specific trim from car api, status: ${response.status}`)
   }
   const data = await response.json() as any;
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.send(data);
 })
 
@@ -61,13 +65,14 @@ app.get("/get_body", async (req, res) => {
     res.status(400).send("'year' and 'make' and 'model' are required query parameters!");
   }
 
-  const url = urlQueryBuilder(req.query, `${API_SERVER_DOMAIN}/bodies`);
+  const url = urlQueryBuilder(req.query, `${API_SERVER_DOMAIN}/bodies/v2`);
 
   const response = await fetch(url);
   if (!response.ok) {
     throw new Error(`Error fetching body information from car api, status: ${response.status}`)
   }
   const data = await response.json() as any;
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
   res.send(data?.data);
 })
 
